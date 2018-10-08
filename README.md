@@ -1,13 +1,16 @@
 
-# A Deeper Dive Into `Self`
+# A Deeper Dive into "self"
 
 ## Introduction
 In this lesson, we are going to talk a little more about `self` in object oriented Python (OOP). We have seen a little bit about self when we learned about defining and calling instance methods. So far we know that `self` is always explicitly defined as our instance method's **first parameter**. We also know that instance methods implicitly use the instance object as the **first argument** when we call the method. By convention, we name this first parameter `self` since it is a reference to the object on which we are operating. Let's take a look at some code that uses `self`.
 
 ## Objectives
-* Using Self
-* Operating on Self
-* Using self to call instance methods
+
+You will be able to:
+
+* Use self
+* Operate on self
+* Use self to call instance methods
 
 ## Using `self`
 
@@ -66,6 +69,10 @@ print("1. ", gail.introduce())
 print("2. ", the_snail.introduce())
 ```
 
+    1.  Hi, my name is Gail. It is a pleasure to meet you!
+    2.  Hi, my name is Gail. It is a pleasure to meet you!
+
+
 Uh oh! That's not quite right. We need our introduce method to be a bit more dynamic so that each Person instance object is able to introduce itself. This is where self comes in! `self`, after all, is the instance object we are asking to introduce it`self`. And since our instance method already has our instance object available, we can just interpolate our instance object's name attribute. 
 
 Let's again refactor our class to make this change
@@ -94,6 +101,10 @@ print("1. ", gail.introduce())
 print("2. ", the_snail.introduce())
 ```
 
+    1.  Hi, my name is Gail. It is a pleasure to meet you!
+    2.  Hi, my name is the Snail. It is a pleasure to meet you!
+
+
 Great! See how the method is the same for both instance objects, but `self` is not the same. `self` always refers to the object which is being operated on. So, in the case of `gail`, the method returns the string with the `name` attribute of the instance object `gail`. 
 
 Now let's think about some of our other behaviors that might be a bit more involved in order to make them dynamic. For example, everyone's favorite default conversation, the weather. It changes rapidly and seems to always be a choice topic for small talk. How would we create a method to introduce ourselves AND make a comment about the weather? Talk about a great way to start a friendship!
@@ -107,6 +118,13 @@ def say_hello_and_weather(instance_obj, weather_pattern):
 
 say_hello_and_weather(the_snail, "overcast")
 ```
+
+
+
+
+    "Hi, my name is the Snail! What wildly overcast weather we're having, right?!"
+
+
 
 Alright, that is great but we want it as an instance method, right? So, let's go back to the drawing board with our Person class and see if we can get this awesome new greeting method figured out.
 
@@ -124,6 +142,9 @@ print("1. ", the_snail.say_hello_and_weather("humid"))
 # notice that we are ONLY passing in the weather pattern argument
 # instance methods **implicictly** pass in the instance object as the **first** argument
 ```
+
+    1.  Hi, my name is the Snail! What wildly humid weather we're having, right?!
+
 
 Awesome, we nailed it! Again, note that the only arguments we pass in are those that come after `self` when we define an instance method's parameters.
 
@@ -146,6 +167,11 @@ print("1. ", the_snail.age)
 print("2. ", the_snail.happy_birthday())
 print("3. ", the_snail.age)
 ```
+
+    1.  29
+    2.  Happy Birthday to the Snail (aka ME)! Can't believe I'm 30?!
+    3.  30
+
 
 Obviously, this method could be improved, but what is important to note is that not only can we use self to *read* attributes from the instance object, but we can also use self inside these methods to change the attributes of the instance object. 
 
@@ -178,6 +204,13 @@ print("2. ", the_snail.eat_sandwhich())
 print("3. ", the_snail.hungry)
 print("4. ", the_snail.eat_sandwhich())
 ```
+
+    1.  True
+    Hunger is being relieved
+    2.  Wow, that really hit the spot! I am so full, but more importantly, I'm not hangry anymore!
+    3.  False
+    4.  Oh, I don't think I can eat another bite. Thank you, though!
+
 
 Awesome! We see that not only are we changing attributes of our instance object, we are also using `self` to call other instance methods, like we would do with the instance object outside of a function. 
 
