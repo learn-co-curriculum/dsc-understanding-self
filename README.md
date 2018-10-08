@@ -1,264 +1,186 @@
 
-# Practice with Instance Variables
+# A Deeper Dive Into `Self`
 
 ## Introduction
-In this lesson, we will introduce using instance variables, which we use to store information about a particular instance object. We use instance variables as another tool to help us model our object oriented solutions after real-world contexts. So, while we may have a class that is modeled after a School, we have many schools. Things that differentiate schools are the `number_of_students`, `average_class_size`, `city`, etc. These all represent information about a particular school, just as instance variables represent information about a particular instance object.  
+In this lesson, we are going to talk a little more about `self` in object oriented Python (OOP). We have seen a little bit about self when we learned about defining and calling instance methods. So far we know that `self` is always explicitly defined as our instance method's **first parameter**. We also know that instance methods implicitly use the instance object as the **first argument** when we call the method. By convention, we name this first parameter `self` since it is a reference to the object on which we are operating. Let's take a look at some code that uses `self`.
 
 ## Objectives
+* Using Self
+* Operating on Self
+* Using self to call instance methods
 
-* Define instance variables
-* Describe how instance variables give objects attributes and properties
+## Using `self`
 
-## Defining Instance Variables
-
-We have been writing functions and working with variables for a while now. We've talked about the difference between global variables and local variables. However, classes add another level of complexity with instance variables. Remember the *difference between local and global variables is their **scope***. Local varibles have local or function scope, that is that they are only able to be accessed inside the function in which they are defined. Global variables can be accessed from anywhere in the file. Below is an example to jog our memory:  
+In order to really understand self and how it's used, it is best to use an example. Let's use the example of a **Person** class. A class produces instance objects, and we know that objects are just pieces of code that bundle together attributes like descriptors and behaviors. A Person can have descriptors like `height`, `weight`, `age`, etc. and also have behaviors such as `saying_hello`, `eat_breakfast`, `talk_about_weather`, etc. 
 
 
 ```python
-name = "terrance" # global variable
-def example_function():
-    name = "jake" # local variable
-    last_name = "spalding"
-    print(name, last_name)
-
-example_function() # executing fuction with local variable
-print(name) # printing global variable
-print(last_name) # printing local variable
-```
-
-    jake spalding
-    terrance
+class Person():
     
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-1-6aed85cdb045> in <module>()
-          7 example_function() # executing fuction with local variable
-          8 print(name) # printing global variable
-    ----> 9 print(last_name) # printing local variable
-    
-
-    NameError: name 'last_name' is not defined
-
-
-Again, our local variable, `last_name` is bound to its local or function scope, so when we try to print its value outside of the function it is undefined. Likewise, when we try to print the `name` variable outside of the function, it refers to the globally defined `name` as opposed to the `name` defined in the `example_function`. This brings us to instance variables. They act similarly in that they are bound to their instance. This means that we define instance variables **on** instance objects. These instance variables are then only accessible through the instance on which they were defined.
-
-The following is an example of adding an instance variable to an instance object and then accessing it later. Don't worry if it is confusing right now, the rest of this lesson will clear things up.
-
-
-```python
-class Person:
-    pass
-
-terrance = Person() # instantiating instance object from Person class called 'terrance'
-jake = Person() # instantiating instance object from Person class called 'terrance'
-terrance.first_name = "terrance" # adding an instance variable, first_name to the instance
-```
-
-
-```python
-print(terrance.first_name) # printing instance variable accessed from the instance
-```
-
-    terrance
-    
-
-
-```python
-print(jake.first_name) # undefined since it is not defined yet on the instance jake
-```
-
-
-    ---------------------------------------------------------------------------
-
-    AttributeError                            Traceback (most recent call last)
-
-    <ipython-input-4-0eccfe9aaa93> in <module>()
-    ----> 1 print(jake.first_name) # undefined since it is not defined yet on the instance jake
-    
-
-    AttributeError: 'Person' object has no attribute 'first_name'
-
-
-
-```python
-print(first_name) # undefined since it is not being accessed from the instance
-```
-
-
-    ---------------------------------------------------------------------------
-
-    NameError                                 Traceback (most recent call last)
-
-    <ipython-input-5-6924f43a7ba7> in <module>()
-    ----> 1 print(first_name) # undefined since it is not being accessed from the instance
-    
-
-    NameError: name 'first_name' is not defined
-
-
-## Okay, But Why Do We Need Instance Variables?
-
-Let's imagine we have two drivers. We instantiate them as instances of the `ExampleDriver` class and assign them to variables, `driver_one` and `driver_two`. Let's see this:
-
-
-```python
-class ExampleDriver:
-    pass
-    
-driver_one = ExampleDriver()
-driver_two = ExampleDriver()
-print(driver_one)
-print(driver_two)
-```
-
-    <__main__.ExampleDriver object at 0x000001B132DE2518>
-    <__main__.ExampleDriver object at 0x000001B132D32E48>
-    
-
-Notice anything? Pretty hard to tell who is who... How can we fix this? We could probably give them names, right? Well, how do we assign a name to these instances?
-
-That's where instance variables come in. Instance variables can be thought of as an attribute on an object. So, if we want our instance objects to have a `name` attribute, we simply need to add it to the object.
-
-
-```python
-driver_one.name = 'alex'
-print(driver_one.name)
-```
-
-    alex
-    
-
-Great! We have made our first instance variable and we can now start to differentiate our instance objects and make them a bit more interesting. To reiterate, adding an attribute like `name` to an instance object is done by simply using the following syntax: `variable-dot-attribute = value`. Let's add driver_two's name now, let's name them 'julian'.
-
-
-```python
-# add name to driver_two
-driver_two.name = 'julian'
-print(driver_two.name)
-```
-
-    julian
-    
-
-Now, we can imagine wanting to add many instance variables to these instance objects which would make them quite complex. We will want a way to look at the instance variables -- similar to how we want to be able to look at the keys in a dictionary. Luckily for us, there is a couple methods that do just that! 
-
-The first, `vars`, is a method that returns a dictionary containing the keys and values that represent the instance variable names and values of an instance object. Let's see it in action:
-
-> **Note:** instance variables and instance methods both can be referred to as `attributes` of an instance object. 
-
-
-```python
-vars(driver_two)
-```
-
-
-
-
-    {'name': 'julian'}
-
-
-
-The next, `__dict__`, is actually a built-in attribute of all objects in Python, including Classes and instance objects. In fact, it is used every time we access an instance variable. The example below shows how accessing instance variables works behind the scenes.
-
-```python
-    driver_one.name # "alex"
-    
-    driver_one.__dict__["name"] # "alex"
-```
-Let's see what the output of the `__dict__` method looks like in action:
-
-
-```python
-driver_two.__dict__
-```
-
-
-
-
-    {'name': 'julian'}
-
-
-
-So, to prove our example above, let's show each step of the process, starting with accessing the `name` variable with the dot (`.`) method.
-
-
-```python
-driver_one.name
-```
-
-
-
-
-    'alex'
-
-
-
-
-```python
-# creates a dictionary with the key 'name' pointing to the string 'alex'
-driver_one.__dict__
-```
-
-
-
-
-    {'name': 'alex'}
-
-
-
-
-```python
-# creates a dictionary with the key 'name' pointing to the string 'alex'
-# then accesses the key 'name' to return the value 'alex'
-driver_one.__dict__['name']
-```
-
-
-
-
-    'alex'
-
-
-
-## Differentiating Instance Methods And Instance Variables
-
-Awesome! As the note above states, instance variables aren't the only attribute. Our instance methods are also attributes and a lot of the time we use them in tandem. Let's see a quick example:
-
-
-```python
-class Person:
     def say_hello(self):
-        print("Hi! How are you today? My name is " + self.name.title() + ".")
+        return "Hi, how are you?"
         
-jeff = Person()
-jeff.name = "jeff"
+    def eat_breakfast(self):
+        self.hungry = False
+        return "Yum that was delish!"
+
+gail = Person()
+print("1.", vars(gail))
+gail.name = "Gail"
+gail.age = 29
+gail.weight = 'None of your business!'
+print("2.", gail.say_hello())
+print("3.", gail.eat_breakfast())
+print("4.", vars(gail))
 ```
+
+    1. {}
+    2. Hi, how are you?
+    3. Yum that was delish!
+    4. {'name': 'Gail', 'age': 29, 'weight': 'None of your business!', 'hungry': False}
+
+
+Here we can seee that our person instance objects have two behaviors and we can add instance variables and assign values to them pretty easily. Note that we also can add instance variables to gail by using `self` inside our instance methods.
+
+What if we wanted a method that introduces oneself? It would be similar to our `say_hello` method, but would probably at least include our name, right? Let's refactor our class to include a `introduce` method.
 
 
 ```python
-jeff.say_hello()
-```
-
-    Hi! How are you today? My name is Jeff.
+class Person():
     
+    def introduce(self):
+        return "Hi, my name is Gail. It is a pleasure to meet you!"
+    
+    def say_hello(self):
+        return "Hi, how are you?"
+        
+    def eat_breakfast(self):
+        self.hungry = False
+        return "Yum that was delish!"
+        
+gail = Person()
+gail.name = "Gail"
+the_snail = Person()
+the_snail.name = "The Snail"
+print("1. ", gail.introduce())
+print("2. ", the_snail.introduce())
+```
+
+Uh oh! That's not quite right. We need our introduce method to be a bit more dynamic so that each Person instance object is able to introduce itself. This is where self comes in! `self`, after all, is the instance object we are asking to introduce it`self`. And since our instance method already has our instance object available, we can just interpolate our instance object's name attribute. 
+
+Let's again refactor our class to make this change
+
+## Operating on `self`
 
 
 ```python
-jeff.name
+class Person():
+    
+    def introduce(self):
+        return f"Hi, my name is {self.name}. It is a pleasure to meet you!"
+    
+    def say_hello(self):
+        return "Hi, how are you?"
+        
+    def eat_breakfast(self):
+        self.hungry = False
+        return "Yum that was delish!"
+        
+gail = Person()
+gail.name = "Gail"
+the_snail = Person()
+the_snail.name = "the Snail"
+print("1. ", gail.introduce())
+print("2. ", the_snail.introduce())
 ```
 
+Great! See how the method is the same for both instance objects, but `self` is not the same. `self` always refers to the object which is being operated on. So, in the case of `gail`, the method returns the string with the `name` attribute of the instance object `gail`. 
+
+Now let's think about some of our other behaviors that might be a bit more involved in order to make them dynamic. For example, everyone's favorite default conversation, the weather. It changes rapidly and seems to always be a choice topic for small talk. How would we create a method to introduce ourselves AND make a comment about the weather? Talk about a great way to start a friendship!
+
+Let's see how we would do this with just a regular function:
 
 
+```python
+def say_hello_and_weather(instance_obj, weather_pattern):
+    return f"Hi, my name is {instance_obj.name}! What wildly {weather_pattern} weather we're having, right?!"
 
-    'jeff'
+say_hello_and_weather(the_snail, "overcast")
+```
+
+Alright, that is great but we want it as an instance method, right? So, let's go back to the drawing board with our Person class and see if we can get this awesome new greeting method figured out.
 
 
+```python
+class Person():
 
-So, as we can see instance variables and instance methods look very similar syntactically. In fact, the main difference between the two is that instance methods are callable attributes on an instance object and instance variables are not callable. This makes sense since instance methods have a block of code to execute and instance variables do not. 
+    def say_hello_and_weather(self, weather_pattern):
+        # we are using self instead of instance_obj because we know self represents the instance object
+        return f"Hi, my name is {self.name}! What wildly {weather_pattern} weather we're having, right?!"
+
+the_snail = Person()
+the_snail.name = "the Snail"
+print("1. ", the_snail.say_hello_and_weather("humid"))
+# notice that we are ONLY passing in the weather pattern argument
+# instance methods **implicictly** pass in the instance object as the **first** argument
+```
+
+Awesome, we nailed it! Again, note that the only arguments we pass in are those that come after `self` when we define an instance method's parameters.
+
+Now that we have figured out how to leverage self and even use instance methods with more than just `self` as an argument, let's look at how we can use self to operate on and modify an instance object.
+
+Let's say it is `gail`'s birthday. Gail is 29 and she is turning 30. How do we make sure our instance object reflects that? Well, we can define an instance method that updates `gail`'s age
+
+
+```python
+class Person():
+
+    def happy_birthday(self):
+        self.age += 1
+        return f"Happy Birthday to {self.name} (aka ME)! Can't believe I'm {self.age}?!"
+
+the_snail = Person()
+the_snail.name = "the Snail"
+the_snail.age = 29
+print("1. ", the_snail.age)
+print("2. ", the_snail.happy_birthday())
+print("3. ", the_snail.age)
+```
+
+Obviously, this method could be improved, but what is important to note is that not only can we use self to *read* attributes from the instance object, but we can also use self inside these methods to change the attributes of the instance object. 
+
+Let's take this a step further and look at how we can call other methods using self. 
+
+## Calling Instance Methods on `self`
+
+Another very important behavior people have is eating. It is something that we all do and it helps prevent us from getting **hangry**, or angry because we're hungry.
+
+
+```python
+class Person():
+
+    def eat_sandwhich(self):
+        if (self.hungry):
+            self.relieve_hunger()
+            return "Wow, that really hit the spot! I am so full, but more importantly, I'm not hangry anymore!"
+        else:
+            return "Oh, I don't think I can eat another bite. Thank you, though!"
+    
+    def relieve_hunger(self):
+        print("Hunger is being relieved")
+        self.hungry = False
+
+the_snail = Person()
+the_snail.name = "the Snail"
+the_snail.hungry = True
+print("1. ", the_snail.hungry)
+print("2. ", the_snail.eat_sandwhich())
+print("3. ", the_snail.hungry)
+print("4. ", the_snail.eat_sandwhich())
+```
+
+Awesome! We see that not only are we changing attributes of our instance object, we are also using `self` to call other instance methods, like we would do with the instance object outside of a function. 
 
 ## Summary
-In this lesson we saw how to define instance variables and saw how to use them in order to give our instance objects attributes and added complexity. We then saw how to define instance methods and call them on our instance objects. 
+
+In this lesson, we examined how we use `self` in OOP. We first reviewed using `self` to define our instance methods appropriately. Next we looked at how we can operated on `self` and leverage it in order to make our instance methods a bit more re-usable and dynamic for each of our instance objects by interpolating our instance object's `name` attribute. We also looked at using more than just `self` as an argument in our methods and using self to change the attributes on an isntance object. Finally, we introduced using self to call other instance methods.
