@@ -4,6 +4,13 @@
 ## Introduction
 In this lesson, you'll learn a little more about `self` in object-oriented Python (OOP). You've seen a little bit about self when you learned about defining and calling instance methods. So far you've seen that `self` is always explicitly defined as the instance method's **first parameter**. You've also seen that instance methods implicitly use the instance object as the **first argument** when you call the method. By convention, you name this first parameter `self` since it is a reference to the object on which you are operating. Let's take a look at some code that uses `self`.
 
+## Objectives
+You will be able to:
+
+* Use self
+* Operate on self
+* Use self to call instance methods
+
 ## Using `self`
 
 In order to really understand self and how it's used, it is best to use an example. Let's use the example of a **Person** class. A class produces instance objects, which in turn are just pieces of code that bundle together attributes like descriptors and behaviors. For example, an instance object of a Person class can have descriptors like `height`, `weight`, `age`, etc. and also have behaviors such as `saying_hello`, `eat_breakfast`, `talk_about_weather`, etc. 
