@@ -7,9 +7,9 @@ In this lesson, you'll learn a little more about `self` in object-oriented Pytho
 ## Objectives
 You will be able to:
 
-* Use self
-* Operate on self
-* Use self to call instance methods
+* Use `self`
+* Operate on `self`
+* Use `self` to call instance methods
 
 ## Using `self`
 
